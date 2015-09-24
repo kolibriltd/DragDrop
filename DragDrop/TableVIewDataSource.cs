@@ -8,14 +8,16 @@ namespace DragDrop
 	public class TableVIewDataSource:UITableViewDataSource
 	{
 		nint numberOfSections;
+		List<CollectionViewDataSource> cellDataSources;
 
 		public TableVIewDataSource()
 		{
-			
+			this.cellDataSources = new List<CollectionViewDataSource>();
 		}
 
 		public TableVIewDataSource(nint sectionsCount)
 		{
+			this.cellDataSources = new List<CollectionViewDataSource>();
 			this.numberOfSections = sectionsCount;
 		}
 
@@ -26,10 +28,23 @@ namespace DragDrop
 			{
 				cell = (TableCell)new UITableViewCell();
 			}
-			CollectionViewDataSource collectionSource = new CollectionViewDataSource();
-			collectionSource.boundCollectionView = cell.collectionView;
-			collectionSource.addItem(new ModelItem(55));
+			CollectionViewDataSource collectionSource;
+			try
+			{
+				collectionSource = this.cellDataSources[indexPath.Section];
+			}
+			catch//if (collectionSource == null)
+			{
+				collectionSource = new CollectionViewDataSource();
+				collectionSource.boundCollectionView = cell.collectionView;
+				collectionSource.addItem(new ModelItem(-2));
+				collectionSource.addItem(new ModelItem(-1));
+
+				this.cellDataSources.Add(collectionSource);
+			}
+
 			cell.collectionView.DataSource = collectionSource;
+
 			return cell;
 		}
 

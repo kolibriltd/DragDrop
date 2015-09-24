@@ -33,7 +33,7 @@ namespace DragDrop
 			collectionSource.boundCollectionView = unsortedCollectionView;
 			this.unsortedCollectionView.DataSource = /*(UICollectionViewDataSource)*/collectionSource;
 
-			TableVIewDataSource tableSource = new TableVIewDataSource(5);
+			TableVIewDataSource tableSource = new TableVIewDataSource(3);
 			this.tableView.DataSource = /*(UITableViewDataSource)*/tableSource;
 
             ObjCRuntime.Selector sel = new ObjCRuntime.Selector("HandleLongPress:");
@@ -55,48 +55,55 @@ namespace DragDrop
 			CGPoint tapPointOnScreen = sender.LocationInView(this.View);
             switch (sender.State)
             {
-                case UIGestureRecognizerState.Began:
-                    Console.WriteLine("Gesture Began");
+				case UIGestureRecognizerState.Began:
+				{
+					Console.WriteLine("Gesture Began");
 
-                    tappedCellPath = unsortedCollectionView.IndexPathForItemAtPoint(tapPointInCollectionView);
-                    if (tappedCellPath == null)
-                    {
-                        sender.Enabled = false;
-                        sender.Enabled = true;
-                        Console.WriteLine("Tap location does not point to any cell");
-                        return;
-                    }
-                    else
-                    {
-                        CollectionCell tappedCell = (CollectionCell)unsortedCollectionView.CellForItem(tappedCellPath);
-                        tappedCell.Alpha = 0.25f;
-                        NSData cellViewMirrorData = NSKeyedArchiver.ArchivedDataWithRootObject(tappedCell);
-                        this.draggableView = (UIView)NSKeyedUnarchiver.UnarchiveObject(cellViewMirrorData);
+					tappedCellPath = unsortedCollectionView.IndexPathForItemAtPoint(tapPointInCollectionView);
+					if (tappedCellPath == null)
+					{
+						sender.Enabled = false;
+						sender.Enabled = true;
+						Console.WriteLine("Tap location does not point to any cell");
+						return;
+					}
+					else
+					{
+						CollectionCell tappedCell = (CollectionCell)unsortedCollectionView.CellForItem(tappedCellPath);
+						tappedCell.Alpha = 0.25f;
+						NSData cellViewMirrorData = NSKeyedArchiver.ArchivedDataWithRootObject(tappedCell);
+						this.draggableView = (UIView)NSKeyedUnarchiver.UnarchiveObject(cellViewMirrorData);
 						this.draggableView.Center = tapPointOnScreen;
-                        this.draggableView.Alpha = 0.5f;
-                        this.draggableView.Hidden = false;
-                        this.View.AddSubview(this.draggableView);
-                    }
-                    break;
-                case UIGestureRecognizerState.Changed:
-                    Console.WriteLine("Gesture Moved");
+						this.draggableView.Alpha = 0.5f;
+						this.draggableView.Hidden = false;
+						this.View.AddSubview(this.draggableView);
+					}
+				}
+                break;
+				case UIGestureRecognizerState.Changed:
+				{
+					Console.WriteLine("Gesture Moved");
 
 					this.draggableView.Center = tapPointOnScreen;
-
-                    break;
+				}
+                break;
 				case UIGestureRecognizerState.Ended:
+				{
 					Console.WriteLine("Gesture Ended");
 
-					ModelItem item = ((CollectionViewDataSource)this.unsortedCollectionView.DataSource).items[(int)tappedCellPath.Item];
-					((CollectionViewDataSource)this.unsortedCollectionView.DataSource).items.Remove(item);
-					this.unsortedCollectionView.DeleteItems(new NSIndexPath[] { tappedCellPath });
+					CollectionCell tappedCell = (CollectionCell)unsortedCollectionView.CellForItem(tappedCellPath);
+					tappedCell.Alpha = 1.0f;
+
+//					ModelItem item = ((CollectionViewDataSource)this.unsortedCollectionView.DataSource).items[(int)tappedCellPath.Item];
+//					((CollectionViewDataSource)this.unsortedCollectionView.DataSource).items.Remove(item);
+//					this.unsortedCollectionView.DeleteItems(new NSIndexPath[] { tappedCellPath });
 
 					this.draggableView.RemoveFromSuperview();
 
-                    this.draggableView = null;
-                    this.tappedCellPath = null;
-
-                    break;
+					this.draggableView = null;
+					this.tappedCellPath = null;
+				}
+                break;
             }
         }
 	}

@@ -28,11 +28,13 @@ namespace DragDrop
 		public void addItem(ModelItem item)
 		{
 //			#warning fix this!!
-//			NSIndexPath lastCellIndexPath = NSIndexPath.FromIndex((nuint)this.items.Count);
-//
-//			this.items.Add(item);
-//
-//			this.boundCollectionView.InsertItems(new NSIndexPath[] {lastCellIndexPath});
+			NSIndexPath lastCellIndexPath = NSIndexPath.FromItemSection(this.boundCollectionView.NumberOfItemsInSection(0), 0);
+			this.items.Add(item);
+
+			if (this.boundCollectionView.DataSource != null)
+			{
+				this.boundCollectionView.InsertItems(new NSIndexPath[] { lastCellIndexPath });
+			}
 		}
 
 		public override UICollectionViewCell GetCell (UICollectionView collectionView, NSIndexPath indexPath)
