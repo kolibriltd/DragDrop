@@ -1,0 +1,16 @@
+﻿<Properties StartupItem="DragDrop/DragDrop.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="DragDrop/CollectionViewDataSource.cs">
+    <Files>
+      <File FileName="DragDrop/TableVIewDataSource.cs" Line="1" Column="1" />
+      <File FileName="DragDrop/CollectionViewDataSource.cs" Line="1" Column="1" />
+      <File FileName="DragDrop/TableCell.cs" Line="1" Column="1" />
+      <File FileName="DragDrop/ViewController.cs" Line="1" Column="1" />
+      <File FileName="DragDrop/TableCell.designer.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
