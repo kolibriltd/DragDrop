@@ -27,13 +27,27 @@ namespace DragDrop
 
 		public void addItem(ModelItem item)
 		{
-//			#warning fix this!!
 			NSIndexPath lastCellIndexPath = NSIndexPath.FromItemSection(this.boundCollectionView.NumberOfItemsInSection(0), 0);
 			this.items.Add(item);
 
 			if (this.boundCollectionView.DataSource != null)
 			{
 				this.boundCollectionView.InsertItems(new NSIndexPath[] { lastCellIndexPath });
+			}
+		}
+
+		public void addItemAtIndexPath(ModelItem item, NSIndexPath indexPath)
+		{
+			//this.items.Add(item);
+			if (indexPath == null)
+			{
+				this.addItem(item);
+				return;
+			}
+			this.items.Insert((int)indexPath.Item, item);
+			if (this.boundCollectionView.DataSource != null)
+			{
+				this.boundCollectionView.InsertItems(new NSIndexPath[] { indexPath });
 			}
 		}
 

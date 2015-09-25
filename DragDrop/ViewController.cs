@@ -6,9 +6,11 @@ using CoreGraphics;
 
 namespace DragDrop
 {
-    public partial class ViewController : UIViewController, IUIGestureRecognizerDelegate
+	public partial class ViewController : UIViewController, IUIGestureRecognizerDelegate
 	{
-        NSIndexPath tappedCellPath;
+        NSIndexPath tappedUnsortedCellPath;
+		NSIndexPath tappedTableCellPath;
+		NSIndexPath tappedCollectionCellPath;
         UIView draggableView;
 
 		public ViewController (IntPtr handle) : base (handle)
@@ -31,21 +33,48 @@ namespace DragDrop
 
 			CollectionViewDataSource collectionSource = new CollectionViewDataSource(unsortedItems);
 			collectionSource.boundCollectionView = unsortedCollectionView;
-			this.unsortedCollectionView.DataSource = /*(UICollectionViewDataSource)*/collectionSource;
+			this.unsortedCollectionView.DataSource = collectionSource;
 
-			TableVIewDataSource tableSource = new TableVIewDataSource(3);
-			this.tableView.DataSource = /*(UITableViewDataSource)*/tableSource;
+			TableVIewDataSource tableSource = new TableVIewDataSource(15);
+			this.tableView.DataSource = tableSource;
+//			this.tableView.Delegate = new TableViewDelegate();
 
-            ObjCRuntime.Selector sel = new ObjCRuntime.Selector("HandleLongPress:");
-            this.dragRecognizer.AddTarget(this, sel);
-
+			this.dragRecognizer.AddTarget(this, new ObjCRuntime.Selector("HandleLongPress:"));
             unsortedCollectionView.AddGestureRecognizer(this.dragRecognizer);
+
+			this.dragFromTableRecognizer.AddTarget(this, new ObjCRuntime.Selector("HandleTableLongPress:"));
+			this.tableView.AddGestureRecognizer(this.dragFromTableRecognizer);
 		}
 
 		public override void DidReceiveMemoryWarning ()
 		{
 			base.DidReceiveMemoryWarning ();
 			// Release any cached data, images, etc that aren't in use.
+		}
+
+		[Export("HandleTableLongPress:")]
+		public void HandleTableLongPress(UILongPressGestureRecognizer sender)
+		{
+			CGPoint tapPointInTableView = sender.LocationInView(sender.View);
+			CGPoint tapPointOnScreen = sender.LocationInView(this.View);
+			switch (sender.State)
+			{
+				case UIGestureRecognizerState.Began:
+					{
+						Console.WriteLine("Gesture Began");
+					}
+				break;
+				case UIGestureRecognizerState.Changed:
+					{
+						Console.WriteLine("Gesture Moved");
+					}
+				break;
+				case UIGestureRecognizerState.Ended:
+					{
+						Console.WriteLine("Gesture Ended");
+					}
+				break;
+			}
 		}
 
         [Export("HandleLongPress:")]
@@ -56,53 +85,71 @@ namespace DragDrop
             switch (sender.State)
             {
 				case UIGestureRecognizerState.Began:
-				{
-					Console.WriteLine("Gesture Began");
+					{
+						Console.WriteLine("Gesture Began");
 
-					tappedCellPath = unsortedCollectionView.IndexPathForItemAtPoint(tapPointInCollectionView);
-					if (tappedCellPath == null)
-					{
-						sender.Enabled = false;
-						sender.Enabled = true;
-						Console.WriteLine("Tap location does not point to any cell");
-						return;
+						tappedUnsortedCellPath = unsortedCollectionView.IndexPathForItemAtPoint(tapPointInCollectionView);
+						if (tappedUnsortedCellPath == null)
+						{
+							sender.Enabled = false;
+							sender.Enabled = true;
+							Console.WriteLine("Tap location does not point to any cell");
+							return;
+						}
+						else
+						{
+							CollectionCell tappedCell = (CollectionCell)unsortedCollectionView.CellForItem(tappedUnsortedCellPath);
+							tappedCell.Alpha = 0.25f;
+							NSData cellViewMirrorData = NSKeyedArchiver.ArchivedDataWithRootObject(tappedCell);
+							this.draggableView = (UIView)NSKeyedUnarchiver.UnarchiveObject(cellViewMirrorData);
+							this.draggableView.Center = tapPointOnScreen;
+							this.draggableView.Alpha = 0.5f;
+							this.draggableView.Hidden = false;
+							this.View.AddSubview(this.draggableView);
+						}
 					}
-					else
-					{
-						CollectionCell tappedCell = (CollectionCell)unsortedCollectionView.CellForItem(tappedCellPath);
-						tappedCell.Alpha = 0.25f;
-						NSData cellViewMirrorData = NSKeyedArchiver.ArchivedDataWithRootObject(tappedCell);
-						this.draggableView = (UIView)NSKeyedUnarchiver.UnarchiveObject(cellViewMirrorData);
-						this.draggableView.Center = tapPointOnScreen;
-						this.draggableView.Alpha = 0.5f;
-						this.draggableView.Hidden = false;
-						this.View.AddSubview(this.draggableView);
-					}
-				}
                 break;
 				case UIGestureRecognizerState.Changed:
-				{
-					Console.WriteLine("Gesture Moved");
+					{
+						//Console.WriteLine("Gesture Moved");
 
-					this.draggableView.Center = tapPointOnScreen;
-				}
+						this.draggableView.Center = tapPointOnScreen;
+					}
                 break;
 				case UIGestureRecognizerState.Ended:
-				{
-					Console.WriteLine("Gesture Ended");
+					{
+						Console.WriteLine("Gesture Ended");
 
-					CollectionCell tappedCell = (CollectionCell)unsortedCollectionView.CellForItem(tappedCellPath);
-					tappedCell.Alpha = 1.0f;
+						ModelItem item = ((CollectionViewDataSource)this.unsortedCollectionView.DataSource).items[(int)tappedUnsortedCellPath.Item];
 
-//					ModelItem item = ((CollectionViewDataSource)this.unsortedCollectionView.DataSource).items[(int)tappedCellPath.Item];
-//					((CollectionViewDataSource)this.unsortedCollectionView.DataSource).items.Remove(item);
-//					this.unsortedCollectionView.DeleteItems(new NSIndexPath[] { tappedCellPath });
+						CGPoint tableDropPoint = sender.LocationInView(this.tableView);
 
-					this.draggableView.RemoveFromSuperview();
+						if (!this.tableView.Frame.Contains(tapPointOnScreen))
+						{
+							Console.WriteLine("Outside");
+							CollectionCell tappedCell = (CollectionCell)unsortedCollectionView.CellForItem(tappedUnsortedCellPath);
+							tappedCell.Alpha = 1.0f;
+						}
+						else
+						{
+							Console.WriteLine("Inside");
+							NSIndexPath tableDropIndexPath = this.tableView.IndexPathForRowAtPoint(tableDropPoint);
+							TableCell tableDropCell = (TableCell)this.tableView.CellAt(tableDropIndexPath);
 
-					this.draggableView = null;
-					this.tappedCellPath = null;
-				}
+							CGPoint collectionDropPoint = sender.LocationInView(tableDropCell.collectionView);
+							NSIndexPath collectionDropIndexPath = tableDropCell.collectionView.IndexPathForItemAtPoint(collectionDropPoint);
+
+							((CollectionViewDataSource)tableDropCell.collectionView.DataSource).addItemAtIndexPath(item, collectionDropIndexPath);
+
+							((CollectionViewDataSource)this.unsortedCollectionView.DataSource).items.Remove(item);
+							this.unsortedCollectionView.DeleteItems(new NSIndexPath[] { tappedUnsortedCellPath });
+						}
+							
+						this.draggableView.RemoveFromSuperview();
+
+						this.draggableView = null;
+						this.tappedUnsortedCellPath = null;
+					}
                 break;
             }
         }

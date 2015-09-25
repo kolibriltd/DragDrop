@@ -37,8 +37,8 @@ namespace DragDrop
 			{
 				collectionSource = new CollectionViewDataSource();
 				collectionSource.boundCollectionView = cell.collectionView;
-				collectionSource.addItem(new ModelItem(-2));
-				collectionSource.addItem(new ModelItem(-1));
+//				collectionSource.addItem(new ModelItem(-2));
+//				collectionSource.addItem(new ModelItem(-1));
 
 				this.cellDataSources.Add(collectionSource);
 			}
