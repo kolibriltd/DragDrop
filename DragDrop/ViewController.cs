@@ -40,10 +40,8 @@ namespace DragDrop
 //			this.tableView.Delegate = new TableViewDelegate();
 
 			this.dragRecognizer.AddTarget(this, new ObjCRuntime.Selector("HandleLongPress:"));
-            unsortedCollectionView.AddGestureRecognizer(this.dragRecognizer);
-
-			this.dragFromTableRecognizer.AddTarget(this, new ObjCRuntime.Selector("HandleTableLongPress:"));
-			this.tableView.AddGestureRecognizer(this.dragFromTableRecognizer);
+            //unsortedCollectionView.AddGestureRecognizer(this.dragRecognizer);
+			this.View.AddGestureRecognizer(this.dragRecognizer);
 		}
 
 		public override void DidReceiveMemoryWarning ()
@@ -52,11 +50,9 @@ namespace DragDrop
 			// Release any cached data, images, etc that aren't in use.
 		}
 
-		[Export("HandleTableLongPress:")]
+		[Export("HandleLongPress:")]
 		public void HandleTableLongPress(UILongPressGestureRecognizer sender)
 		{
-			CGPoint tapPointInTableView = sender.LocationInView(sender.View);
-			CGPoint tapPointOnScreen = sender.LocationInView(this.View);
 			switch (sender.State)
 			{
 				case UIGestureRecognizerState.Began:
@@ -76,9 +72,9 @@ namespace DragDrop
 				break;
 			}
 		}
-
-        [Export("HandleLongPress:")]
-        public void HandleLongPress(UILongPressGestureRecognizer sender)
+			
+        [Export("HandleUnsortedLongPress:")]
+		public void HandleUnsortedLongPress(UILongPressGestureRecognizer sender)
         {
 			CGPoint tapPointInCollectionView = sender.LocationInView(sender.View);
 			CGPoint tapPointOnScreen = sender.LocationInView(this.View);

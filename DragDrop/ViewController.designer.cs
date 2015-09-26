@@ -13,9 +13,6 @@ namespace DragDrop
 	partial class ViewController
 	{
 		[Outlet]
-		UIKit.UILongPressGestureRecognizer dragFromTableRecognizer { get; set; }
-
-		[Outlet]
 		UIKit.UILongPressGestureRecognizer dragRecognizer { get; set; }
 
 		[Outlet]
@@ -26,11 +23,6 @@ namespace DragDrop
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (dragFromTableRecognizer != null) {
-				dragFromTableRecognizer.Dispose ();
-				dragFromTableRecognizer = null;
-			}
-
 			if (dragRecognizer != null) {
 				dragRecognizer.Dispose ();
 				dragRecognizer = null;
