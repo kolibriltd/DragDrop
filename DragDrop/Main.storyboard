@@ -25,7 +25,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="idc-jP-XcI" id="vwg-R9-8rF">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="AMY-BW-sTZ">
+                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="AMY-BW-sTZ" customClass="MyCollectionView">
                                                     <rect key="frame" x="0.0" y="0.0" width="768" height="150"/>
                                                     <color key="backgroundColor" red="1" green="0.87510405786463508" blue="0.7597323745155089" alpha="1" colorSpace="calibratedRGB"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="B7I-wj-FuQ">
@@ -42,14 +42,14 @@
                                                                 <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <subviews>
-                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Nf-8S-aHn">
+                                                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Nf-8S-aHn">
                                                                         <rect key="frame" x="74" y="0.0" width="1" height="150"/>
                                                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" constant="1" id="e8i-MK-3To"/>
                                                                         </constraints>
                                                                     </view>
-                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QTk-OO-cqh">
+                                                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QTk-OO-cqh">
                                                                         <rect key="frame" x="0.0" y="75" width="150" height="1"/>
                                                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                                         <constraints>
@@ -99,7 +99,7 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="yKM-tf-vhX">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="yKM-tf-vhX" customClass="MyCollectionView">
                                 <rect key="frame" x="0.0" y="20" width="768" height="150"/>
                                 <color key="backgroundColor" red="0.83557369100000001" green="0.86244525540000005" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -119,14 +119,14 @@
                                             <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zmD-Re-rez">
+                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zmD-Re-rez">
                                                     <rect key="frame" x="75" y="0.0" width="1" height="150"/>
                                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="1" id="Q0Z-Vj-W8b"/>
                                                     </constraints>
                                                 </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W4J-Zz-CzW">
+                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W4J-Zz-CzW">
                                                     <rect key="frame" x="0.0" y="74" width="150" height="1"/>
                                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
@@ -178,7 +178,7 @@
                     <connections>
                         <outlet property="dragRecognizer" destination="Rkm-FL-Blp" id="i7s-ai-UAt"/>
                         <outlet property="tableView" destination="jTs-Zl-42e" id="k4v-zK-a9h"/>
-                        <outlet property="unsortedCollectionView" destination="yKM-tf-vhX" id="Ba9-0q-9FQ"/>
+                        <outlet property="unsortedCollectionView" destination="yKM-tf-vhX" id="ciV-9M-i1k"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

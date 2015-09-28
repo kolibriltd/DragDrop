@@ -19,7 +19,7 @@ namespace DragDrop
 		UIKit.UITableView tableView { get; set; }
 
 		[Outlet]
-		UIKit.UICollectionView unsortedCollectionView { get; set; }
+		DragDrop.MyCollectionView unsortedCollectionView { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

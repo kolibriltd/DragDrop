@@ -101,6 +101,10 @@
     </Compile>
     <Compile Include="TableVIewDataSource.cs" />
     <Compile Include="TableViewDelegate.cs" />
+    <Compile Include="MyCollectionView.cs" />
+    <Compile Include="MyCollectionView.designer.cs">
+      <DependentUpon>MyCollectionView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
