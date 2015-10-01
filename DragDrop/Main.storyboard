@@ -184,7 +184,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
                 <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="Rkm-FL-Blp"/>
             </objects>
-            <point key="canvasLocation" x="563" y="600"/>
+            <point key="canvasLocation" x="599" y="338"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

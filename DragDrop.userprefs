@@ -1,11 +1,13 @@
 ﻿<Properties StartupItem="DragDrop/DragDrop.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhoneSimulator" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhone6.8.3" />
   <MonoDevelop.Ide.Workbench ActiveDocument="DragDrop/ViewController.cs">
     <Files>
-      <File FileName="DragDrop/ViewController.cs" Line="56" Column="5" />
+      <File FileName="DragDrop/ViewController.cs" Line="69" Column="5" />
       <File FileName="DragDrop/TableVIewDataSource.cs" Line="1" Column="1" />
       <File FileName="DragDrop/CollectionViewDataSource.cs" Line="1" Column="1" />
       <File FileName="DragDrop/TableViewDelegate.cs" Line="1" Column="1" />
+      <File FileName="DragDrop/Main.cs" Line="1" Column="1" />
+      <File FileName="DragDrop/Info.plist" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

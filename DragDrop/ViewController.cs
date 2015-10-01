@@ -130,11 +130,16 @@ namespace DragDrop
 				case UIGestureRecognizerState.Cancelled:
 					{
 						Console.WriteLine("Gesture Cancelled");
-						this.draggableView.RemoveFromSuperview();
-						this.draggableView = null;
-
-						CollectionCell sourceCell = (CollectionCell)sourceCollection.CellForItem(sourceIndexPath);
-						sourceCell.Alpha = 1.0f;
+						if (this.draggableView != null)
+						{
+							this.draggableView.RemoveFromSuperview();
+							this.draggableView = null;
+						}
+						if (sourceIndexPath != null)
+						{
+							CollectionCell sourceCell = (CollectionCell)sourceCollection.CellForItem(sourceIndexPath);
+							sourceCell.Alpha = 1.0f;
+						}
 					}
 				break;
 			}
