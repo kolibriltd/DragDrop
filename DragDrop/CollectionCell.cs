@@ -17,5 +17,11 @@ namespace DragDrop
         {
             this.descriptionLabel.Text = text;
         }
+
+		public void setPicture(string pictureName)
+		{
+			UIImage image = UIImage.FromBundle(pictureName);
+			this.cellPicture.Image = image;
+		}
 	}
 }

@@ -12,6 +12,7 @@ namespace DragDrop
 		NSIndexPath sourceIndexPath;
 
         UIView draggableView;
+		UIImageView draggableImageView;
 
 		public ViewController (IntPtr handle) : base (handle)
 		{
@@ -35,7 +36,15 @@ namespace DragDrop
 
 			for (int i = 0; i < 30; i++) 
 			{
-				ModelItem item = new ModelItem(i);
+				ModelItem item = null;
+				if (i == 0)
+				{
+					item = new ModelItem(i, "kokoko");
+				}
+				else
+				{
+					item = new ModelItem(i);
+				}
 				unsortedItems.Add(item);
 			}
 
@@ -56,6 +65,15 @@ namespace DragDrop
 			base.DidReceiveMemoryWarning ();
 			// Release any cached data, images, etc that aren't in use.
 		}
+
+//		private UIImage getUIImageForUIView(UIView view)
+//		{
+//			UIGraphics.BeginImageContextWithOptions(view.Frame.Size, view.Opaque, (nfloat)0.0);
+//			view.Layer.RenderInContext(UIGraphics.GetCurrentContext());
+//			UIImage image = UIGraphics.GetImageFromCurrentImageContext();
+//			UIGraphics.EndImageContext();
+//			return image;
+//		}
 
 		[Export("HandleLongPress:")]
 		public void HandleTableLongPress(UILongPressGestureRecognizer sender)
@@ -84,8 +102,10 @@ namespace DragDrop
 
 							CollectionCell sourceCell = (CollectionCell)sourceCollection.CellForItem(sourceIndexPath);
 							sourceCell.Alpha = 0.25f;
-							NSData cellViewMirrorData = NSKeyedArchiver.ArchivedDataWithRootObject(sourceCell);
-							this.draggableView = (UIView)NSKeyedUnarchiver.UnarchiveObject(cellViewMirrorData);
+//							NSData cellViewMirrorData = NSKeyedArchiver.ArchivedDataWithRootObject(sourceCell);
+//							this.draggableView = (UIView)NSKeyedUnarchiver.UnarchiveObject(cellViewMirrorData);
+
+							this.draggableView = sourceCell.SnapshotView(true);
 							this.draggableView.Center = tapLocation;
 							this.draggableView.Alpha = 0.5f;
 							this.draggableView.Hidden = false;
@@ -104,7 +124,7 @@ namespace DragDrop
 
 						this.draggableView.RemoveFromSuperview();
 						this.draggableView = null;
-
+						
 						tapLocation = sender.LocationInView(this.View);
 						hitView = this.View.HitTest(tapLocation, null);
 
@@ -122,9 +142,9 @@ namespace DragDrop
 						NSIndexPath destinationIndexPath = destinationCollection.IndexPathForItemAtPoint(sender.LocationInView(destinationCollection));
 						((CollectionViewDataSource)destinationCollection.DataSource).addItemAtIndexPath(item, destinationIndexPath);
 
-						((CollectionViewDataSource)sourceCollection.DataSource).items.Remove(item);
-						sourceCollection.DeleteItems(new NSIndexPath[] { sourceIndexPath });
-
+						((CollectionViewDataSource)sourceCollection.DataSource).removeItemAtIndexPath(sourceIndexPath);
+//						((CollectionViewDataSource)sourceCollection.DataSource).items.Remove(item);
+//						sourceCollection.DeleteItems(new NSIndexPath[] { sourceIndexPath });
 					}
 				break;
 				case UIGestureRecognizerState.Cancelled:

@@ -51,16 +51,43 @@ namespace DragDrop
 			}
 		}
 
+		public void removeItemAtIndexPath(NSIndexPath indexPath)
+		{
+			if (indexPath != null)
+			{
+				this.items.RemoveAt((int)indexPath.Item);
+				if (this.boundCollectionView.DataSource != null)
+				{
+					this.boundCollectionView.DeleteItems(new NSIndexPath[] { indexPath });
+				}
+			}
+		}
+
 		public override UICollectionViewCell GetCell (UICollectionView collectionView, NSIndexPath indexPath)
 		{
-			CollectionCell cell = (CollectionCell)collectionView.DequeueReusableCell ("CollectionCell", indexPath);
+			ModelItem item = this.items[(int)indexPath.Item];
+			CollectionCell cell = null;
+			if (item.picture != null)
+			{
+				cell = (CollectionCell)collectionView.DequeueReusableCell ("CollectionImageCell", indexPath);
+			}
+			else
+			{
+				cell = (CollectionCell)collectionView.DequeueReusableCell ("CollectionCell", indexPath);
+			}
 			if (cell == null)
 			{
 				cell = (CollectionCell)new UICollectionViewCell();
 			}
 
-			cell.setText(this.items[(int)indexPath.Item].value.ToString());
-
+			if (item.value != null)
+			{
+				cell.setText(item.value.ToString());
+			}
+			if (item.picture != null)
+			{
+				cell.setPicture(item.picture);
+			}
 			return cell;
 		}
 

@@ -13,10 +13,18 @@ namespace DragDrop
 	partial class CollectionCell
 	{
 		[Outlet]
+		UIKit.UIImageView cellPicture { get; set; }
+
+		[Outlet]
 		UIKit.UILabel descriptionLabel { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (cellPicture != null) {
+				cellPicture.Dispose ();
+				cellPicture = null;
+			}
+
 			if (descriptionLabel != null) {
 				descriptionLabel.Dispose ();
 				descriptionLabel = null;
