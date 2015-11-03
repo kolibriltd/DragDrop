@@ -12,7 +12,6 @@ namespace DragDrop
 		NSIndexPath sourceIndexPath;
 
         UIView draggableView;
-		UIImageView draggableImageView;
 
 		public ViewController (IntPtr handle) : base (handle)
 		{
@@ -54,9 +53,9 @@ namespace DragDrop
 
 			TableVIewDataSource tableSource = new TableVIewDataSource(15);
 			this.tableView.DataSource = tableSource;
-//			this.tableView.Delegate = new TableViewDelegate();
 
-			this.dragRecognizer.AddTarget(this, new ObjCRuntime.Selector("HandleLongPress:"));
+			this.dragRecognizer.AddTarget(new Action<NSObject>(HandleTableLongPress));
+//			this.dragRecognizer.AddTarget(this, new ObjCRuntime.Selector("HandleLongPress:"));
 			this.View.AddGestureRecognizer(this.dragRecognizer);
 		}
 
@@ -66,22 +65,13 @@ namespace DragDrop
 			// Release any cached data, images, etc that aren't in use.
 		}
 
-//		private UIImage getUIImageForUIView(UIView view)
-//		{
-//			UIGraphics.BeginImageContextWithOptions(view.Frame.Size, view.Opaque, (nfloat)0.0);
-//			view.Layer.RenderInContext(UIGraphics.GetCurrentContext());
-//			UIImage image = UIGraphics.GetImageFromCurrentImageContext();
-//			UIGraphics.EndImageContext();
-//			return image;
-//		}
-
 		[Export("HandleLongPress:")]
-		public void HandleTableLongPress(UILongPressGestureRecognizer sender)
+		public void HandleTableLongPress(NSObject _sender)
 		{
+			UILongPressGestureRecognizer sender = (UILongPressGestureRecognizer)_sender;
+
 			CGPoint tapLocation = sender.LocationInView(this.View);
 			UIView hitView = this.View.HitTest(tapLocation, null);
-//			Console.WriteLine(hitView.ToString());
-//			Console.WriteLine(sender.State.ToString());
 
 			switch (sender.State)
 			{
@@ -123,7 +113,9 @@ namespace DragDrop
 						Console.WriteLine("Gesture Ended");
 
 						this.draggableView.RemoveFromSuperview();
+						this.draggableView.Dispose();
 						this.draggableView = null;
+
 						
 						tapLocation = sender.LocationInView(this.View);
 						hitView = this.View.HitTest(tapLocation, null);
@@ -143,8 +135,6 @@ namespace DragDrop
 						((CollectionViewDataSource)destinationCollection.DataSource).addItemAtIndexPath(item, destinationIndexPath);
 
 						((CollectionViewDataSource)sourceCollection.DataSource).removeItemAtIndexPath(sourceIndexPath);
-//						((CollectionViewDataSource)sourceCollection.DataSource).items.Remove(item);
-//						sourceCollection.DeleteItems(new NSIndexPath[] { sourceIndexPath });
 					}
 				break;
 				case UIGestureRecognizerState.Cancelled:
@@ -153,6 +143,7 @@ namespace DragDrop
 						if (this.draggableView != null)
 						{
 							this.draggableView.RemoveFromSuperview();
+							this.draggableView.Dispose();
 							this.draggableView = null;
 						}
 						if (sourceIndexPath != null)

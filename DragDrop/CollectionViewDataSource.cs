@@ -38,7 +38,6 @@ namespace DragDrop
 
 		public void addItemAtIndexPath(ModelItem item, NSIndexPath indexPath)
 		{
-			//this.items.Add(item);
 			if (indexPath == null)
 			{
 				this.addItem(item);
@@ -75,6 +74,7 @@ namespace DragDrop
 			{
 				cell = (CollectionCell)collectionView.DequeueReusableCell ("CollectionCell", indexPath);
 			}
+
 			if (cell == null)
 			{
 				cell = (CollectionCell)new UICollectionViewCell();
@@ -84,6 +84,11 @@ namespace DragDrop
 			{
 				cell.setText(item.value.ToString());
 			}
+			else
+			{
+				cell.setText(string.Empty);
+			}
+
 			if (item.picture != null)
 			{
 				cell.setPicture(item.picture);
@@ -95,7 +100,6 @@ namespace DragDrop
 		{
 			return this.items.Count;
 		}
-
 	}
 }
 

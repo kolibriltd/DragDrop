@@ -4,7 +4,7 @@ namespace DragDrop
 {
 	public class ModelItem
 	{
-        public int value;
+        public int? value;
 		public string picture;
 
         public ModelItem (int value)

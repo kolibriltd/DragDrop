@@ -16,13 +16,11 @@ namespace DragDrop
 
 		public override UIView HitTest(CGPoint point, UIEvent uievent)
 		{
-			//Console.WriteLine("\n\nHitTest inner: This:{0} \n\nPoint:{1}", this.ToString(), point.ToString());
 			if (this.PointInside(point, uievent))
 			{
 				return this;
 			}
 			return null;
-			//return base.HitTest(point, uievent);
 		}
 	}
 }
