@@ -39,7 +39,7 @@ namespace DragDrop
 				ModelItem item = null;
 				if (i == 0)
 				{
-					item = new ModelItem(i, "kokoko");
+					item = new ModelItem(i, "Image");
 				}
 				else
 				{
